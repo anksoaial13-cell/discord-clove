@@ -8,9 +8,8 @@ from discord import app_commands
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
-# integração do sistema de vinculação
+BASE_URL = os.getenv("BASE_URL", "https://clove-vinculo.onrender.com").rstrip("/")
 
-from vinculacao.config import BASE_URL
 from vinculacao.db import delete_link, init_db
 from vinculacao.services import AppError, remove_rank_roles
 
