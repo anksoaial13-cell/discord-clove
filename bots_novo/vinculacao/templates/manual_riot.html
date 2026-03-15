@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Informar Riot ID</h1>
+<p class="subtitle">Não encontramos uma conta Riot conectada no seu Discord, ou a leitura automática falhou. Digite manualmente abaixo.</p>
+{% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+<form method="post">
+  <label>Riot ID (nome)</label>
+  <input name="riot_name" value="{{ suggested_name }}" placeholder="Ex: TenZ">
+
+  <label>Tag</label>
+  <input name="riot_tag" value="{{ suggested_tag }}" placeholder="Ex: NA1">
+
+  <label>Região</label>
+  <select name="region">
+    <option value="br">BR</option>
+    <option value="latam">LATAM</option>
+    <option value="na">NA</option>
+    <option value="eu">EU</option>
+    <option value="ap">AP</option>
+    <option value="kr">KR</option>
+  </select>
+
+  <div class="actions">
+    <button class="btn btn-primary" type="submit">Confirmar vínculo</button>
+  </div>
+</form>
+{% endblock %}

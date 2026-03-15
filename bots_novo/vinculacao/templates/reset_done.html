@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Vinculação resetada</h1>
+<div class="alert success">Sua conta foi desvinculada e os cargos rastreados foram removidos.</div>
+<div class="actions">
+  <a class="btn btn-primary" href="{{ url_for('index') }}">Vincular novamente</a>
+</div>
+{% endblock %}

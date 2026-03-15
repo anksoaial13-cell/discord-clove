@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Vincule sua conta</h1>
+<p class="subtitle">Conecte sua conta Discord, detecte sua Riot vinculada no Discord e receba automaticamente o cargo do seu elo.</p>
+<div class="box">
+  <p>Fluxo recomendado:</p>
+  <div class="pill">1. Conecte a Riot no Discord • 2. Autorize o site • 3. Receba seu cargo</div>
+  {% if existing %}
+  <div class="alert success">Sua conta já está vinculada como <strong>{{ existing.riot_name }}#{{ existing.riot_tag }}</strong>.</div>
+  {% endif %}
+  <div class="actions">
+    <a class="btn btn-primary" href="{{ url_for('login') }}">Vincular conta</a>
+    {% if existing %}
+    <form method="post" action="{{ url_for('reset_link') }}">
+      <button class="btn btn-soft" type="submit">Resetar vínculo</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

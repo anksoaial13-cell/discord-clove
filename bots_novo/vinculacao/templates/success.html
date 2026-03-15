@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Conta vinculada com sucesso</h1>
+<p class="subtitle">Seu cargo foi atualizado no Discord.</p>
+<div class="alert success">
+  {{ 'A conta Riot foi detectada automaticamente pelo Discord.' if auto else 'A conta Riot foi vinculada manualmente.' }}
+</div>
+<div class="grid">
+  <div class="stat"><small>Discord</small><strong>{{ link.discord_username }}</strong></div>
+  <div class="stat"><small>Riot ID</small><strong>{{ link.riot_name }}#{{ link.riot_tag }}</strong></div>
+  <div class="stat"><small>Elo base</small><strong>{{ link.rank_name }}</strong></div>
+  <div class="stat"><small>Tier atual</small><strong>{{ link.tier_name }} ({{ link.rr }} RR)</strong></div>
+</div>
+<div class="actions">
+  <a class="btn btn-soft" href="{{ url_for('index') }}">Voltar ao início</a>
+</div>
+{% endblock %}
