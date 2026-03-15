@@ -5,13 +5,13 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
-BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:5000")
+BASE_URL = os.getenv("BASE_URL", "https://clove-vinculo.onrender.com").rstrip("/")
 PORT = int(os.getenv("PORT", "5000"))
 SESSION_SECRET = os.getenv("SESSION_SECRET", "dev-secret")
 
 DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
-DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI", "http://127.0.0.1:5000/callback")
+DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI", "https://clove-vinculo.onrender.com/callback")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 DISCORD_GUILD_ID = os.getenv("DISCORD_GUILD_ID")
 
