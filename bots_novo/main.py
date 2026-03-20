@@ -9,6 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
 BASE_URL = os.getenv("BASE_URL", "https://clove-vinculo.onrender.com").rstrip("/")
+print("BASE_URL DO BOT:", BASE_URL)
 
 from vinculacao.db import delete_link, init_db
 from vinculacao.services import AppError, remove_rank_roles
@@ -24,6 +25,7 @@ ASSET_ICON = "assets/clove_icon.gif"
 # IDS
 TICKET_CATEGORY_ID = 1481744479072551142
 SUPORTE_ROLE_ID = 1481754427848265811
+MEMBRO_ROLE_ID = int(os.getenv("MEMBRO_ROLE_ID", "0"))
 
 # VIP ROLES
 VIP_BASIC = 1482119405776273559
@@ -644,6 +646,32 @@ async def resetar_vinculo_slash(interaction: discord.Interaction):
             ephemeral=True
         )
 
+
+
+
+
+@bot.event
+async def on_member_join(member: discord.Member):
+    try:
+        cargo_membro = None
+
+        if MEMBRO_ROLE_ID:
+            cargo_membro = member.guild.get_role(MEMBRO_ROLE_ID)
+
+        if cargo_membro is None:
+            cargo_membro = discord.utils.get(member.guild.roles, name="membro")
+
+        if cargo_membro is None:
+            print("Cargo 'membro' não encontrado. Defina MEMBRO_ROLE_ID no .env ou confira o nome do cargo.")
+            return
+
+        await member.add_roles(cargo_membro, reason="Cargo automático para novos membros")
+        print(f"Cargo '{cargo_membro.name}' dado automaticamente para {member}.")
+
+    except discord.Forbidden:
+        print("Sem permissão para dar o cargo 'membro'. Verifique se o cargo do bot está acima dele e se 'Gerenciar Cargos' está ativado.")
+    except Exception as exc:
+        print(f"Erro ao dar o cargo automático de membro: {exc}")
 
 
 @bot.event
