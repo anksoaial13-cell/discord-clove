@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from discord.ext import tasks
 import discord
 from discord.ext import commands
 from discord import app_commands
@@ -21,16 +22,21 @@ print("VALOR TOKEN:", TOKEN)
 
 # ICONS
 ASSET_ICON = "assets/clove_icon.gif"
+THUMBNAIL_URL = "https://i.pinimg.com/736x/e3/68/9c/e3689c69330f9ead5feabad8f154be76.jpg"
 
 # IDS
 TICKET_CATEGORY_ID = 1481744479072551142
 SUPORTE_ROLE_ID = 1481754427848265811
 MEMBRO_ROLE_ID = int(os.getenv("MEMBRO_ROLE_ID", "0"))
+CANAL_BUMP_ID = 1490459357932945628
+CARGO_BUMP_ID = 1490459529182187650
 
 # VIP ROLES
 VIP_BASIC = 1482119405776273559
 VIP_PRO = 1482119323987345569
 VIP_PLUS = 1481754724658057368
+
+ultima_msg = None
 
 intents = discord.Intents.default()
 intents.message_content = True
