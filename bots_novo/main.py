@@ -22,7 +22,8 @@ print("VALOR TOKEN:", TOKEN)
 
 # ICONS
 ASSET_ICON = "assets/clove_icon.gif"
-THUMBNAIL_URL = "https://i.pinimg.com/736x/e3/68/9c/e3689c69330f9ead5feabad8f154be76.jpg"
+BUMP_THUMB_PATH = "assets/bump_thumb.jpg"
+
 
 # IDS
 TICKET_CATEGORY_ID = 1481744479072551142
@@ -52,6 +53,65 @@ MAX_MEMBROS_PLUS = 30
 
 # inicializa banco da vinculação
 init_db()
+
+
+
+@tasks.loop(hours=2)
+async def aviso_bump():
+    global ultima_msg
+
+    canal = bot.get_channel(CANAL_BUMP_ID)
+    if canal is None:
+        print("Canal de bump não encontrado.")
+        return
+
+    cargo = canal.guild.get_role(CARGO_BUMP_ID)
+
+    if ultima_msg:
+        try:
+            await ultima_msg.delete()
+        except (discord.NotFound, discord.Forbidden):
+            pass
+        except Exception as exc:
+            print(f"Não foi possível apagar o aviso de bump anterior: {exc}")
+
+    embed = discord.Embed(
+        title="Aviso de bump",
+        description=(
+            "para ajudar a comunidade a crescer e continuar em destaque, use o comando "
+            "**/bump** neste chat.\n\n"
+            "certifique-se de que o cooldown do DISBOARD já acabou antes de enviar o comando."
+        ),
+        color=0xB57EDC
+    )
+
+    embed.add_field(
+        name="aviso",
+        value=(
+            "```"
+            "o cooldown do disboard já acabou.\n"
+            "use /bump agora para ajudar\n"
+            "na divulgação da clove. "
+            "```"
+        ),
+        inline=False
+    )
+
+    embed.set_footer(text="Clove • obrigada por ajudar na divulgação")
+
+    content = cargo.mention if cargo else None
+
+    if os.path.exists(BUMP_THUMB_PATH):
+        file = discord.File(BUMP_THUMB_PATH, filename="bump_thumb.jpg")
+        embed.set_thumbnail(url="attachment://bump_thumb.jpg")
+        ultima_msg = await canal.send(content=content, embed=embed, file=file)
+    else:
+        ultima_msg = await canal.send(content=content, embed=embed)
+
+
+@aviso_bump.before_loop
+async def before_aviso_bump():
+    await bot.wait_until_ready()
 
 # --------------------------------
 # SISTEMA DE TICKET
@@ -687,6 +747,9 @@ async def on_ready():
         print(f"Bot conectado como {bot.user} | Slash commands sincronizados: {len(synced)}")
     except Exception as exc:
         print(f"Falha ao sincronizar slash commands: {exc}")
+
+    if not aviso_bump.is_running():
+        aviso_bump.start()
 
     print("Bot está pronto!")
 
